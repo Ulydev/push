@@ -50,8 +50,11 @@ Init push
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, fullscreen)
 ```
 gameWidth, gameHeight (number) : Game fixed resolution
+
 windowWidth, windowHeight (number) : Window resolution (or desktop resolution, if you're using fullscreen)
+
 fullscreen (bool) : Activates fullscreen mode
+
 
 Apply push's transforms
 ```lua
