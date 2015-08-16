@@ -55,7 +55,7 @@ windowWidth, windowHeight (number) : Window resolution (or desktop resolution, i
 
 fullscreen (bool) : Activates fullscreen mode
 
-
+ 
 
 Apply push's transforms
 ```lua
