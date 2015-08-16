@@ -54,4 +54,4 @@ Apply push's transforms
 ```lua
 push:apply(operation)
 ```
-operation (number) : should be 1 or 2, meaning "before" or "after" drawing
+operation (number) should be 1 or 2, meaning "before" or "after" drawing
