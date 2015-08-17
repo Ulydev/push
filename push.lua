@@ -23,12 +23,12 @@ function push:setShader(shader)
   self._shader = shader
 end
 
-function push:apply(num, shader)
-  if num == 1 then
+function push:apply(operation, shader)
+  if operation == "start" then
     love.graphics.push()
     love.graphics.scale(self._SCALE)
     love.graphics.setCanvas(self._canvas)
-  else
+  elseif operation == "end" then
     local tempShader = love.graphics.getShader()
     
     love.graphics.setCanvas()
