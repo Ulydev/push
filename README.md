@@ -3,6 +3,8 @@ push
 
 push is a simple resolution-handling library to allows you to focus on making your game with a fixed resolution.
 
+![image](http://s15.postimg.org/4e8bvom0b/Untitled.png)
+
 Setup
 ----------------
 Fullscreen
