@@ -34,11 +34,11 @@ windowWidth, windowHeight = windowWidth*.7, windowHeight*.7 --make the window a 
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, false)
 
 function love.draw()
-  push:apply(1)
+  push:apply("start")
   
   --draw here
   
-  push:apply(2)
+  push:apply("end")
 end
 ```
 
@@ -54,4 +54,4 @@ Apply push's transforms
 ```lua
 push:apply(operation)
 ```
-operation (number) should be 1 or 2, meaning "before" or "after" drawing
+operation (string) should be "start" or "end", meaning "before" or "after" drawing
