@@ -25,12 +25,21 @@ function push:setShader(shader)
   self._shader = shader
 end
 
+<<<<<<< HEAD
 function push:apply(num, shader)
   if num == "start" then
     love.graphics.push()
     love.graphics.scale(self._SCALE)
     love.graphics.setCanvas(self._canvas)
   elseif num == "end" then
+=======
+function push:apply(operation, shader)
+  if operation == "start" then
+    love.graphics.push()
+    love.graphics.scale(self._SCALE)
+    love.graphics.setCanvas(self._canvas)
+  elseif operation == "end" then
+>>>>>>> origin/master
     local tempShader = love.graphics.getShader()
     love.graphics.setCanvas()
     love.graphics.pop()
@@ -57,6 +66,7 @@ function push:calculateScale(offset)
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
 end
 
+<<<<<<< HEAD
 function push:setBorderColor(color)
   self._borderColor = color
 end
@@ -72,3 +82,6 @@ function push:toReal(x, y)
 end
 
 return push
+=======
+return push
+>>>>>>> origin/master
