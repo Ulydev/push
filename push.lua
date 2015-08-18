@@ -16,6 +16,8 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, fullscreen)
   self._INV_SCALE = 1/self._SCALE
   
   self._canvas = love.graphics.newCanvas(self._WWIDTH*self._SCALE, self._WHEIGHT*self._SCALE)
+  
+  self._borderColor = {0, 0, 0}
 
 end
 
@@ -24,15 +26,23 @@ function push:setShader(shader)
 end
 
 function push:apply(num, shader)
-  if num == 1 then
+  if num == "start" then
     love.graphics.push()
     love.graphics.scale(self._SCALE)
     love.graphics.setCanvas(self._canvas)
-  else
+  elseif num == "end" then
     local tempShader = love.graphics.getShader()
-    
     love.graphics.setCanvas()
     love.graphics.pop()
+    
+    local tr, tg, tb, ta = love.graphics.getColor()
+    love.graphics.setColor(self._borderColor)
+    if self._OFFSET.x ~= 0 then
+      love.graphics.rectangle("fill", 0, 0, self._OFFSET.x, self._RHEIGHT)
+      love.graphics.rectangle("fill", self._OFFSET.x+self._WWIDTH*self._SCALE, 0, self._OFFSET.x, self._RHEIGHT)
+    end
+    love.graphics.setColor(tr, tg, tb, ta)
+    
     love.graphics.setShader(shader or self._shader)
     love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
     love.graphics.draw(self._canvas)
@@ -45,6 +55,20 @@ function push:calculateScale(offset)
   self._SCALEX, self._SCALEY = self._RWIDTH/self._WWIDTH, self._RHEIGHT/self._WHEIGHT
   self._SCALE = math.min(self._SCALEX, self._SCALEY)+offset
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
+end
+
+function push:setBorderColor(color)
+  self._borderColor = color
+end
+
+function push:toGame(x, y)
+  x, y = x-self._OFFSET.x, y-self._OFFSET.y
+  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and math.floor(x) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and math.floor(y) or nil
+  return x, y
+end
+
+function push:toReal(x, y)
+  return x+self._OFFSET.x, y+self._OFFSET.y
 end
 
 return push
