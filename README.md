@@ -17,11 +17,11 @@ local windowWidth, windowHeight = love.window.getDesktopDimensions()
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, true)
 
 function love.draw()
-  push:apply(1)
+  push:apply("start")
   
   --draw here
   
-  push:apply(2)
+  push:apply("end")
 end
 ```
 
