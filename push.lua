@@ -40,6 +40,9 @@ function push:apply(operation, shader)
     if self._OFFSET.x ~= 0 then
       love.graphics.rectangle("fill", 0, 0, self._OFFSET.x, self._RHEIGHT)
       love.graphics.rectangle("fill", self._OFFSET.x+self._WWIDTH*self._SCALE, 0, self._OFFSET.x, self._RHEIGHT)
+    elseif self._OFFSET.y ~= 0 then
+      love.graphics.rectangle("fill", 0, 0, self._WWIDTH, self._OFFSET.y)
+      love.graphics.rectangle("fill", 0, self._OFFSET.y+self._WHEIGHT*self._SCALE, self._WWIDTH, self._OFFSET.y)
     end
     love.graphics.setColor(tr, tg, tb, ta)
     
