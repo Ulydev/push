@@ -66,12 +66,12 @@ end
 
 function push:toGame(x, y)
   x, y = x-self._OFFSET.x, y-self._OFFSET.y
-  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and math.floor(x) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and math.floor(y) or nil
+  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and math.floor(x/self._SCALE) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and math.floor(y/self._SCALE) or nil
   return x, y
 end
 
 function push:toReal(x, y)
-  return x+self._OFFSET.x, y+self._OFFSET.y
+  return x*self._SCALE+self._OFFSET.x, y*self._SCALE+self._OFFSET.y
 end
 
 return push
