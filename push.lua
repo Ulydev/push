@@ -12,10 +12,11 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, fullscreen)
   self._SCALEX, self._SCALEY = self._RWIDTH/self._WWIDTH, self._RHEIGHT/self._WHEIGHT
   self._SCALE = math.min(self._SCALEX, self._SCALEY)
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
+  self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x, self._RHEIGHT-self._OFFSET.y
   
   self._INV_SCALE = 1/self._SCALE
   
-  self._canvas = love.graphics.newCanvas(self._WWIDTH*self._SCALE, self._WHEIGHT*self._SCALE)
+  self._canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
   
   self._borderColor = {0, 0, 0}
 
@@ -28,7 +29,7 @@ end
 function push:apply(operation, shader)
   if operation == "start" then
     love.graphics.push()
-    love.graphics.scale(self._SCALE)
+    --love.graphics.scale(self._SCALE)
     love.graphics.setCanvas(self._canvas)
   elseif operation == "end" then
     local tempShader = love.graphics.getShader()
@@ -41,14 +42,15 @@ function push:apply(operation, shader)
       love.graphics.rectangle("fill", 0, 0, self._OFFSET.x, self._RHEIGHT)
       love.graphics.rectangle("fill", self._OFFSET.x+self._WWIDTH*self._SCALE, 0, self._OFFSET.x, self._RHEIGHT)
     elseif self._OFFSET.y ~= 0 then
-      love.graphics.rectangle("fill", 0, 0, self._WWIDTH, self._OFFSET.y)
-      love.graphics.rectangle("fill", 0, self._OFFSET.y+self._WHEIGHT*self._SCALE, self._WWIDTH, self._OFFSET.y)
+      love.graphics.rectangle("fill", 0, 0, self._RWIDTH, self._OFFSET.y)
+      love.graphics.rectangle("fill", 0, self._OFFSET.y+self._WHEIGHT*self._SCALE, self._RWIDTH, self._OFFSET.y)
     end
     love.graphics.setColor(tr, tg, tb, ta)
     
-    love.graphics.setShader(shader or self._shader)
     love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
-    love.graphics.draw(self._canvas)
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.setShader(self._shader)
+    love.graphics.draw(self._canvas, 0, 0, 0, self._SCALE, self._SCALE)
     self._canvas:clear()
     love.graphics.setShader(tempShader)
   end
@@ -66,12 +68,21 @@ end
 
 function push:toGame(x, y)
   x, y = x-self._OFFSET.x, y-self._OFFSET.y
-  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and math.floor(x/self._SCALE) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and math.floor(y/self._SCALE) or nil
+  local normalX, normalY = x/self._GWIDTH, y/self._GHEIGHT
+  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and normalX*self._WWIDTH or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and normalY*self._WHEIGHT or nil
   return x, y
 end
 
 function push:toReal(x, y)
-  return x*self._SCALE+self._OFFSET.x, y*self._SCALE+self._OFFSET.y
+  return x+self._OFFSET.x, y+self._OFFSET.y
+end
+
+function push:switchFullscreen(winw, winh)
+  self._fullscreen = not self._fullscreen
+  local windowWidth, windowHeight = love.window.getDesktopDimensions()
+  self._RWIDTH = self._fullscreen and windowWidth or winw or windowWidth*.5
+  self._RHEIGHT = self._fullscreen and windowHeight or winh or windowHeight*.5
+  self:setupScreen(self._WWIDTH, self._WHEIGHT, self._RWIDTH, self._RHEIGHT, self._fullscreen)
 end
 
 return push

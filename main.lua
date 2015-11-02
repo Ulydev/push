@@ -3,7 +3,7 @@ local push = require "push"
 local gameWidth, gameHeight = 1080, 720
 
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
-windowWidth, windowHeight = windowWidth*.7, windowHeight*.7
+windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
 
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, false)
 push:setBorderColor{0, 0, 0} --default value
@@ -20,7 +20,7 @@ function love.draw()
   
   local mouseX, mouseY = love.mouse.getPosition()
   mouseX, mouseY = push:toGame(mouseX, mouseY)
-  if not mouseX then mouseX, mouseY = "outside", "outside" end --if nil is returned, that means the mouse is outside the game screen
+  if not mouseX or not mouseY then mouseX, mouseY = "outside", "outside" end --if nil is returned, that means the mouse is outside the game screen
 
   love.graphics.print("mouse x : "..mouseX, gameWidth-300, 32)
   love.graphics.print("mouse y : "..mouseY, gameWidth-300, 64)
@@ -32,11 +32,6 @@ end
 
 function love.keypressed(key, isrepeat)
   if key == "f" then --activate fullscreen mode
-    if not push._fullscreen then
-      windowWidth, windowHeight = love.window.getDesktopDimensions()
-    else
-      windowWidth, windowHeight = windowWidth*.7, windowHeight*.7
-    end
-    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, not push._fullscreen)
+    push:switchFullscreen() --optional width and height parameters for window mode
   end
 end
