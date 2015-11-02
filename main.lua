@@ -5,7 +5,7 @@ local gameWidth, gameHeight = 1080, 720
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
 windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
 
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, false)
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
 push:setBorderColor{0, 0, 0} --default value
 
 function love.load()

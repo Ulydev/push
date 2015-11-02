@@ -1,25 +1,36 @@
 local push = {}
 setmetatable(push, push)
 
-function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, fullscreen)
+function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
+  
+  f = f or {}
   
   self._WWIDTH, self._WHEIGHT = WWIDTH, WHEIGHT
   self._RWIDTH, self._RHEIGHT = RWIDTH, RHEIGHT
-  self._fullscreen = fullscreen
+  self._fullscreen = f.fullscreen or self._fullscreen or  false
+  self._resizable = f.resizable or self._resizable or false
   
-  love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false} )
+  love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
+  
+  self:initValues()
+  
+  if not self._canvas then self:createCanvas() end
+  
+  self._borderColor = {0, 0, 0}
 
+end
+
+function push:createCanvas()
+  self._canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
+end
+
+function push:initValues()
   self._SCALEX, self._SCALEY = self._RWIDTH/self._WWIDTH, self._RHEIGHT/self._WHEIGHT
   self._SCALE = math.min(self._SCALEX, self._SCALEY)
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
   self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x, self._RHEIGHT-self._OFFSET.y
   
   self._INV_SCALE = 1/self._SCALE
-  
-  self._canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
-  
-  self._borderColor = {0, 0, 0}
-
 end
 
 function push:setShader(shader)
@@ -82,7 +93,16 @@ function push:switchFullscreen(winw, winh)
   local windowWidth, windowHeight = love.window.getDesktopDimensions()
   self._RWIDTH = self._fullscreen and windowWidth or winw or windowWidth*.5
   self._RHEIGHT = self._fullscreen and windowHeight or winh or windowHeight*.5
-  self:setupScreen(self._WWIDTH, self._WHEIGHT, self._RWIDTH, self._RHEIGHT, self._fullscreen)
+  self:initValues()
+  love.window.setFullscreen(self._fullscreen, "desktop")
 end
+
+function push:resize(w, h)
+  push._RWIDTH = w
+  self._RHEIGHT = h
+  self:initValues()
+end
+
+function love.resize(w, h) return push:resize(w, h) end
 
 return push
