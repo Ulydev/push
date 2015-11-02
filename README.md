@@ -14,7 +14,7 @@ local push = require "push"
 local gameWidth, gameHeight = 1080, 720 --fixed game resolution
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
 
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, true)
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true})
 
 function love.draw()
   push:apply("start")
@@ -33,7 +33,7 @@ local gameWidth, gameHeight = 1080, 720 --fixed game resolution
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
 windowWidth, windowHeight = windowWidth*.7, windowHeight*.7 --make the window a bit smaller than the screen itself
 
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, false)
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
 
 function love.draw()
   push:apply("start")
@@ -49,21 +49,25 @@ Usage
 
 Init push
 ```lua
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, fullscreen)
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen, resizable})
 ```
-*gameWidth*, *gameHeight* represent the game's fixed resolution. *windowWidth* and *windowHeight* are the dimensions of the window you need to adapt the game to. *fullscreen* is a bool that turns fullscreen mode on or off.
+**gameWidth**, **gameHeight** represent the game's fixed resolution. **windowWidth** and **windowHeight** are the dimensions of the window you need to adapt the game to.
+
+The last argument is a table containing:
+- **fullscreen** is a bool that turns fullscreen mode on or off.
+- **resizable** is a bool that allows resizing the window.
 
 Apply push's transforms
 ```lua
 push:apply(operation)
 ```
-*operation* should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
+**operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
 
 Switch fullscreen
 ```lua
 push:switchFullscreen(w, h)
 ```
-*w* and *h* are optional parameters that are used in case the game switches to windowed mode
+**w** and **h** are optional parameters that are used in case the game switches to windowed mode
 
 Set a post-processing shader (will apply to the whole screen)
 ```lua
