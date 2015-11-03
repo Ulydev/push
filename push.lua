@@ -103,6 +103,4 @@ function push:resize(w, h)
   self:initValues()
 end
 
-function love.resize(w, h) return push:resize(w, h) end
-
 return push
