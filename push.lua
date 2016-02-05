@@ -69,7 +69,9 @@ function push:apply(operation, shader)
     love.graphics.setColor(255, 255, 255)
     love.graphics.setShader(self._shader)
     love.graphics.draw(self._canvas, 0, 0, 0, self._SCALE, self._SCALE)
-    self._canvas:clear()
+    love.graphics.setCanvas(self._canvas)
+    love.graphics.clear()
+    love.graphics.setCanvas()
     love.graphics.setShader(tempShader)
   end
 end
@@ -87,7 +89,7 @@ end
 function push:toGame(x, y)
   x, y = x-self._OFFSET.x, y-self._OFFSET.y
   local normalX, normalY = x/self._GWIDTH, y/self._GHEIGHT
-  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and normalX*self._WWIDTH or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and normalY*self._WHEIGHT or nil
+  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and normalX*(self._WWIDTH-self._OFFSET.x) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and normalY*(self._WHEIGHT-self._OFFSET.y) or nil
   return x, y
 end
 

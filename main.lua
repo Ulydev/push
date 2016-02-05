@@ -35,3 +35,7 @@ function love.keypressed(key, isrepeat)
     push:switchFullscreen() --optional width and height parameters for window mode
   end
 end
+
+function love.resize(w, h)
+  push:resize(w, h)
+end
