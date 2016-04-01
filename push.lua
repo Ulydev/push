@@ -35,7 +35,7 @@ function push:initValues()
   self._SCALEX, self._SCALEY = self._RWIDTH/self._WWIDTH, self._RHEIGHT/self._WHEIGHT
   self._SCALE = math.min(self._SCALEX, self._SCALEY)
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
-  self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x, self._RHEIGHT-self._OFFSET.y
+  self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x*2, self._RHEIGHT-self._OFFSET.y*2
   
   self._INV_SCALE = 1/self._SCALE
 end
@@ -89,10 +89,11 @@ end
 function push:toGame(x, y)
   x, y = x-self._OFFSET.x, y-self._OFFSET.y
   local normalX, normalY = x/self._GWIDTH, y/self._GHEIGHT
-  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and normalX*(self._WWIDTH-self._OFFSET.x) or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and normalY*(self._WHEIGHT-self._OFFSET.y) or nil
+  x, y = (x>=0 and x<=self._WWIDTH*self._SCALE) and normalX*self._WWIDTH or nil, (y>=0 and y<=self._WHEIGHT*self._SCALE) and normalY*self._WHEIGHT or nil
   return x, y
 end
 
+--doesn't work - TODO
 function push:toReal(x, y)
   return x+self._OFFSET.x, y+self._OFFSET.y
 end
@@ -107,7 +108,7 @@ function push:switchFullscreen(winw, winh)
 end
 
 function push:resize(w, h)
-  push._RWIDTH = w
+  self._RWIDTH = w
   self._RHEIGHT = h
   self:initValues()
 end
