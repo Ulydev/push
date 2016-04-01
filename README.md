@@ -88,6 +88,14 @@ push:toGame(x, y) --convert coordinates from screen to game (useful for mouse po
 push:toReal(x, y) --convert coordinates from game to screen
 ```
 
+Get game dimensions
+```lua
+push:getDimensions() --returns push:getWidth(), push:getHeight()
+
+push:getWidth() --returns game width
+
+push:getHeight() --returns game height
+```
 
 Resizing the window
 ----------------
