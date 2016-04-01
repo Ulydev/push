@@ -21,7 +21,7 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
   
   self:initValues()
   
-  if not self._canvas then self:createCanvas() end
+  self:createCanvas()
   
   self._borderColor = {0, 0, 0}
 
@@ -112,5 +112,9 @@ function push:resize(w, h)
   self._RHEIGHT = h
   self:initValues()
 end
+
+function push:getWidth() return self._WWIDTH end
+function push:getHeight() return self._WHEIGHT end
+function push:getDimensions() return self._WWIDTH, self._WHEIGHT end
 
 return push
