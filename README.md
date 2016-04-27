@@ -1,7 +1,7 @@
 push
 ==============
 
-push is a simple resolution-handling library to allows you to focus on making your game with a fixed resolution.
+push is a simple resolution-handling library that allows you to focus on making your game with a fixed resolution.
 
 ![image](https://media.giphy.com/media/xTb1RycLHeAOPDownu/giphy.gif)
 
