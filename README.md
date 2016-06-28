@@ -3,7 +3,7 @@ push
 
 push is a simple resolution-handling library that allows you to focus on making your game with a fixed resolution.
 
-![image](https://media.giphy.com/media/xTb1RycLHeAOPDownu/giphy.gif)
+![image](http://s15.postimg.org/4e8bvom0b/Untitled.png)
 
 Setup
 ----------------
@@ -54,8 +54,9 @@ push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen, 
 **gameWidth**, **gameHeight** represent the game's fixed resolution. **windowWidth** and **windowHeight** are the dimensions of the window you need to adapt the game to.
 
 The last argument is a table containing:
-- **fullscreen** is a bool that turns fullscreen mode on or off.
-- **resizable** is a bool that allows resizing the window.
+- **fullscreen** (bool): turns fullscreen mode on or off
+- **resizable** (bool): allows resizing the window
+- **canvas** (bool): uses canvas or not
 
 Apply push's transforms
 ```lua

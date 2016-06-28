@@ -1,5 +1,12 @@
 -- push.lua v0.1
 
+-- Copyright (c) 2016 Ulysse Ramage
+-- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+-- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-- push.lua v0.1
+
 -- Copyright (c) 2015 Ulysse Ramage
 -- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 -- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -16,12 +23,13 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
   self._RWIDTH, self._RHEIGHT = RWIDTH, RHEIGHT
   self._fullscreen = f.fullscreen or self._fullscreen or  false
   self._resizable = f.resizable or self._resizable or false
+  if f.canvas == nil then f.canvas = true end
   
   love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
   
   self:initValues()
   
-  self:createCanvas()
+  if f.canvas then self:createCanvas() end
   
   self._borderColor = {0, 0, 0}
 
@@ -46,33 +54,32 @@ end
 
 function push:apply(operation, shader)
   if operation == "start" then
-    love.graphics.push()
-    --love.graphics.scale(self._SCALE)
-    love.graphics.setCanvas(self._canvas)
-  elseif operation == "end" then
-    local tempShader = love.graphics.getShader()
-    love.graphics.setCanvas()
-    love.graphics.pop()
-    
-    local tr, tg, tb, ta = love.graphics.getColor()
-    love.graphics.setColor(self._borderColor)
-    if self._OFFSET.x ~= 0 then
-      love.graphics.rectangle("fill", 0, 0, self._OFFSET.x, self._RHEIGHT)
-      love.graphics.rectangle("fill", self._OFFSET.x+self._WWIDTH*self._SCALE, 0, self._OFFSET.x, self._RHEIGHT)
-    elseif self._OFFSET.y ~= 0 then
-      love.graphics.rectangle("fill", 0, 0, self._RWIDTH, self._OFFSET.y)
-      love.graphics.rectangle("fill", 0, self._OFFSET.y+self._WHEIGHT*self._SCALE, self._RWIDTH, self._OFFSET.y)
+    if self._canvas then
+      love.graphics.push()
+      love.graphics.setCanvas(self._canvas)
+    else
+      love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
+      love.graphics.setScissor(self._OFFSET.x, self._OFFSET.y, self._WWIDTH*self._SCALE, self._WHEIGHT*self._SCALE)
+      love.graphics.push()
+      love.graphics.scale(self._SCALE)
     end
-    love.graphics.setColor(tr, tg, tb, ta)
-    
-    love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.setShader(self._shader)
-    love.graphics.draw(self._canvas, 0, 0, 0, self._SCALE, self._SCALE)
-    love.graphics.setCanvas(self._canvas)
-    love.graphics.clear()
-    love.graphics.setCanvas()
-    love.graphics.setShader(tempShader)
+  elseif operation == "end" then
+    if self._canvas then
+      love.graphics.pop()
+      love.graphics.setCanvas()
+      
+      love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
+      love.graphics.setColor(255, 255, 255)
+      love.graphics.setShader(shader or self._shader)
+      love.graphics.draw(self._canvas, 0, 0, 0, self._SCALE, self._SCALE)
+      love.graphics.setCanvas(self._canvas)
+      love.graphics.clear()
+      love.graphics.setCanvas()
+      love.graphics.setShader()
+    else
+      love.graphics.pop()
+      love.graphics.setScissor()
+    end
   end
 end
 
