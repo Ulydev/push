@@ -5,32 +5,25 @@
 -- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
--- push.lua v0.1
-
--- Copyright (c) 2015 Ulysse Ramage
--- Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
--- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 local push = {}
 setmetatable(push, push)
 
 function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
-  
+
   f = f or {}
-  
+
   self._WWIDTH, self._WHEIGHT = WWIDTH, WHEIGHT
   self._RWIDTH, self._RHEIGHT = RWIDTH, RHEIGHT
   self._fullscreen = f.fullscreen or self._fullscreen or  false
   self._resizable = f.resizable or self._resizable or false
   if f.canvas == nil then f.canvas = true end
-  
+
   love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
-  
+
   self:initValues()
-  
+
   if f.canvas then self:createCanvas() end
-  
+
   self._borderColor = {0, 0, 0}
 
 end
@@ -44,7 +37,7 @@ function push:initValues()
   self._SCALE = math.min(self._SCALEX, self._SCALEY)
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
   self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x*2, self._RHEIGHT-self._OFFSET.y*2
-  
+
   self._INV_SCALE = 1/self._SCALE
 end
 
@@ -67,7 +60,7 @@ function push:apply(operation, shader)
     if self._canvas then
       love.graphics.pop()
       love.graphics.setCanvas()
-      
+
       love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
       love.graphics.setColor(255, 255, 255)
       love.graphics.setShader(shader or self._shader)
