@@ -33,6 +33,7 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
   
   self._borderColor = {0, 0, 0}
 
+  self._drawFunctions = {["start"]=push.start, ["end"]=push.finish}
 end
 
 function push:createCanvas()
@@ -53,17 +54,13 @@ function push:setShader(shader)
 end
 
 function push:apply(operation, shader)
-  if operation == "start" then
-    if self._canvas then
-      love.graphics.push()
-      love.graphics.setCanvas(self._canvas)
-    else
-      love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
-      love.graphics.setScissor(self._OFFSET.x, self._OFFSET.y, self._WWIDTH*self._SCALE, self._WHEIGHT*self._SCALE)
-      love.graphics.push()
-      love.graphics.scale(self._SCALE)
-    end
-  elseif operation == "end" then
+  -- deprecated
+  if self._drawFunctions[operation] then
+    self._drawFunctions[operation](self, shader)
+  end
+end
+
+function push:finish(shader)
     if self._canvas then
       love.graphics.pop()
       love.graphics.setCanvas()
@@ -80,6 +77,17 @@ function push:apply(operation, shader)
       love.graphics.pop()
       love.graphics.setScissor()
     end
+end
+
+function push:start()
+  if self._canvas then
+    love.graphics.push()
+    love.graphics.setCanvas(self._canvas)
+  else
+    love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
+    love.graphics.setScissor(self._OFFSET.x, self._OFFSET.y, self._WWIDTH*self._SCALE, self._WHEIGHT*self._SCALE)
+    love.graphics.push()
+    love.graphics.scale(self._SCALE)
   end
 end
 
