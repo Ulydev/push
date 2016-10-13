@@ -58,8 +58,13 @@ The last argument is a table containing:
 - **resizable** (bool): allows resizing the window
 - **canvas** (bool): uses canvas or not
 
-Apply push's transforms
+Apply push transforms
 ```lua
+push:start()
+--draw here
+push:finish()
+
+--deprecated
 push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
