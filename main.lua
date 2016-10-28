@@ -16,8 +16,6 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   
-  print(key)
-  
   if key == "space" then
     example = (example < #examples) and example + 1 or 1
     examples[example]()

@@ -17,11 +17,11 @@ local windowWidth, windowHeight = love.window.getDesktopDimensions()
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = true})
 
 function love.draw()
-  push:apply("start")
+  push:start()
   
   --draw here
   
-  push:apply("end")
+  push:finish()
 end
 ```
 
@@ -36,11 +36,11 @@ windowWidth, windowHeight = windowWidth*.7, windowHeight*.7 --make the window a 
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
 
 function love.draw()
-  push:apply("start")
+  push:start()
   
   --draw here
   
-  push:apply("end")
+  push:finish()
 end
 ```
 
@@ -64,7 +64,7 @@ push:start()
 --draw here
 push:finish()
 
---deprecated
+--[[ DEPRECATED ]]--
 push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
