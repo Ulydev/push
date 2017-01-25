@@ -49,7 +49,7 @@ Usage
 
 Init push
 ```lua
-push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen, resizable})
+push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen, resizable, canvas, pixelperfect})
 ```
 **gameWidth**, **gameHeight** represent the game's fixed resolution. **windowWidth** and **windowHeight** are the dimensions of the window you need to adapt the game to.
 
@@ -57,6 +57,7 @@ The last argument is a table containing:
 - **fullscreen** (bool): turns fullscreen mode on or off
 - **resizable** (bool): allows resizing the window
 - **canvas** (bool): uses canvas or not
+- **pixelperfect** (bool): enables pixel-perfect mode (integer scaling 1x, 2x, 3x, ...)
 
 Apply push transforms
 ```lua

@@ -16,6 +16,7 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
   self._RWIDTH, self._RHEIGHT = RWIDTH, RHEIGHT
   self._fullscreen = f.fullscreen or self._fullscreen or  false
   self._resizable = f.resizable or self._resizable or false
+  self._pixelperfect = f.pixelperfect or self._pixelperfect or false
   if f.canvas == nil then f.canvas = true end
 
   love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
@@ -35,7 +36,10 @@ end
 
 function push:initValues()
   self._SCALEX, self._SCALEY = self._RWIDTH/self._WWIDTH, self._RHEIGHT/self._WHEIGHT
+  
   self._SCALE = math.min(self._SCALEX, self._SCALEY)
+  if self._pixelperfect then self._SCALE = math.floor(self._SCALE) end
+  
   self._OFFSET = {x = (self._SCALEX - self._SCALE) * (self._WWIDTH/2), y = (self._SCALEY - self._SCALE) * (self._WHEIGHT/2)}
   self._GWIDTH, self._GHEIGHT = self._RWIDTH-self._OFFSET.x*2, self._RHEIGHT-self._OFFSET.y*2
 
