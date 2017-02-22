@@ -18,6 +18,10 @@ function love.keypressed(key, scancode, isrepeat)
   
   if key == "space" then
     example = (example < #examples) and example + 1 or 1
+    
+    --be sure to reset push settings
+    push:resetSettings()
+    
     examples[example]()
     love.load()
   elseif key == "f" then --activate fullscreen mode

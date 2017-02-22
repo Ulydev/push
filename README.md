@@ -58,6 +58,8 @@ The last argument is a table containing:
 - **resizable** (bool): allows resizing the window
 - **canvas** (bool): uses canvas or not
 - **pixelperfect** (bool): enables pixel-perfect mode (integer scaling 1x, 2x, 3x, ...)
+- **highdpi** (bool): enables high-dpi mode on supported screens (e.g. Retina)
+- **stretched** (bool): stretches the game to window dimensions
 
 Apply push transforms
 ```lua

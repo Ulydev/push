@@ -7,7 +7,11 @@ examples[2] = function() --low-rez example
   local windowWidth, windowHeight = love.window.getDesktopDimensions()
   windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
 
-  push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true})
+  push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {
+    fullscreen = false,
+    resizable = true,
+    pixelperfect = true
+  })
   push:setBorderColor{0, 0, 0} --default value
   
   --
