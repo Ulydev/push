@@ -19,9 +19,17 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, f)
   self._pixelperfect = f.pixelperfect or self._pixelperfect or false
   if f.canvas == nil then f.canvas = true end
 
-  love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
-
+  local windowWidth, windowHeight = love.window.getDesktopDimensions()
+  if self._fullscreen then --save windowed dimensions for later
+    self._WINWIDTH, self._WINHEIGHT = self._RWIDTH, self._RHEIGHT
+  elseif not self._WINWIDTH or not self._WINHEIGHT then
+    self._WINWIDTH, self._WINHEIGHT = windowWidth * .5, windowHeight * .5
+  end
+  self._RWIDTH = self._fullscreen and windowWidth or self._WINWIDTH
+  self._RHEIGHT = self._fullscreen and windowHeight or self._WINHEIGHT
   self:initValues()
+
+  love.window.setMode( self._RWIDTH, self._RHEIGHT, {fullscreen = self._fullscreen, borderless = false, resizable = self._resizable} )
 
   if f.canvas then self:createCanvas() end
 
