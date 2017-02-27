@@ -25,7 +25,7 @@ function love.keypressed(key, scancode, isrepeat)
     examples[example]()
     love.load()
   elseif key == "f" then --activate fullscreen mode
-    push:switchFullscreen() --optional width and height parameters for window mode
+    push:switchFullscreen(640, 480) --optional width and height parameters for window mode
   end
   
 end
