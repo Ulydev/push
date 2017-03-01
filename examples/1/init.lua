@@ -1,8 +1,8 @@
-examples[1] = function () --default example
+examples[1] = function() --low-rez example
   
-  love.graphics.setDefaultFilter("linear", "linear") --default filter
+  love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
   
-  local gameWidth, gameHeight = 1080, 720
+  local gameWidth, gameHeight = 64, 64
 
   local windowWidth, windowHeight = love.window.getDesktopDimensions()
   windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
@@ -10,33 +10,64 @@ examples[1] = function () --default example
   push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {
     fullscreen = false,
     resizable = true,
-    highdpi = true,
-    canvas = false
+    pixelperfect = true
   })
-  push:setBorderColor({0, 0, 0}) --default value
+  push:setBorderColor{0, 0, 0} --default value
+  
+  --
+  
+  time = 0
 
   function love.load()
-    love.graphics.setNewFont(32)
+    mario = love.graphics.newImage("examples/1/mario.png")
+    background = love.graphics.newImage("examples/1/background.png")
+    
+    love.graphics.setNewFont(16)
+  end
+  
+  function love.update(dt)
+    
+    time = (time + dt) % 1
+    
   end
 
   function love.draw()
     push:apply("start")
     
-    love.graphics.setColor(100, 100, 100)
-    love.graphics.rectangle("fill", 0, 0, gameWidth, gameHeight)
-    
     local mouseX, mouseY = love.mouse.getPosition()
     mouseX, mouseY = push:toGame(mouseX, mouseY)
-    --nil is returned if mouse is outside the game screen
+    --if nil is returned, that means the mouse is outside the game screen
     
+    local abs = math.abs(time-.5)
+    local pi = math.cos(math.pi*2*time)
+    local pi2 = math.cos(math.pi*8*time)
+    local w = push:getWidth() 
+    --for animating basic stuff
+    
+    love.graphics.draw(background, 0, 0)
+    
+    love.graphics.setScissor(0, 0, push:getWidth(), push:getHeight()-16)
+    love.graphics.setColor(0, 0, 0, 100)
+    love.graphics.draw(mario, 27, 33)
+    love.graphics.setScissor()
     love.graphics.setColor(255, 255, 255)
-    love.graphics.circle("fill", gameWidth*.5, gameHeight*.5, 50)
+    love.graphics.draw(mario, 26, 32)
     
-    love.graphics.setColor(200, 0, 0)
-    if mouseX and mouseY then love.graphics.circle("line", mouseX, mouseY, 10) end
-    
-    love.graphics.print("mouse x : " .. (mouseX or "outside"), gameWidth-300, 32)
-    love.graphics.print("mouse y : " .. (mouseY or "outside"), gameWidth-300, 64)
+    love.graphics.setColor(0, 0, 0, 100)
+    love.graphics.printf("Hi!", 34+1, 22-pi*2+1, w, "center", -.15+.5*abs, abs*.25+1, abs*.25+1, w*.5, 12)
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.printf("Hi!", 34, 22-pi*2, w, "center", -.15+.5*abs, abs*.25+1, abs*.25+1, w*.5, 12)
+
+    love.graphics.setColor(255, 255, 255)
+    if mouseX and mouseY then --cursor
+      love.graphics.points(
+        mouseX, mouseY-1,
+        mouseX-1, mouseY,
+        mouseX, mouseY,
+        mouseX+1, mouseY,
+        mouseX, mouseY+1
+      )
+    end
     
     push:apply("end")
   end

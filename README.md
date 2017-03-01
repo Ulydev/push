@@ -56,12 +56,12 @@ push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen, 
 The last argument is a table containing:
 - **fullscreen** (bool): turns fullscreen mode on or off
 - **resizable** (bool): allows resizing the window
-- **canvas** (bool): uses canvas or not
+- **canvas** (bool): uses canvas
 - **pixelperfect** (bool): enables pixel-perfect mode (integer scaling 1x, 2x, 3x, ...)
 - **highdpi** (bool): enables high-dpi mode on supported screens (e.g. Retina)
 - **stretched** (bool): stretches the game to window dimensions
 
-Apply push transforms
+Apply **push** transforms
 ```lua
 push:start()
 --draw here
@@ -72,7 +72,40 @@ push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
 
-Miscellaneous functions
+Advanced canvases/shaders
+----------------
+
+**push** provides basic canvas and shader functionality through the *canvas* flag in push:setupScreen() and push:setShader(), but you can also create additional canvases, name them for later use and apply multiple shaders to them.
+
+Set up custom canvases
+```lua
+push:setupCanvas(canvasList)
+
+--e.g. push:setupCanvas({   { name = "foreground", shader = foregroundShader }, { name = "background" }   })
+```
+
+Shaders can be passed to canvases directly through push:setupCanvas(), or you can choose to set them later.
+```lua
+push:setShader(canvasName, shader)
+```
+
+Then, you just need to draw your game on different canvases like you'd do with love.graphics.setCanvas():
+```lua
+push:setCanvas(canvasName)
+```
+
+Resizing the window
+----------------
+
+In order for push to take in account window resizing (if you have set {resizable = true} in push:setupScreen()), you need to call push:resize() like so:
+
+```lua
+function love.resize(w, h)
+  push:resize(w, h)
+end
+```
+
+Misc
 ----------------
 
 Switch fullscreen
@@ -81,13 +114,12 @@ push:switchFullscreen(w, h)
 ```
 **w** and **h** are optional parameters that are used in case the game switches to windowed mode
 
-
 Set a post-processing shader (will apply to the whole screen)
 ```lua
-push:setShader(shader)
+push:setShader([canvasName], shader)
 ```
-You don't need to call this every frame. Simply call it once, and it will be stored into push until you change it back to something else.
-
+You don't need to call this every frame. Simply call it once, and it will be stored into **push** until you change it back to something else.
+If no canvasName is passed, shader will apply to the final render. Use it at your advantage to combine shader effects.
 
 Convert coordinates
 ```lua
@@ -106,13 +138,3 @@ push:getWidth() --returns game width
 push:getHeight() --returns game height
 ```
 
-Resizing the window
-----------------
-
-In order for push to take in account window resizing (if you have set {resizable = true} in push:setupScreen()), you need to call push:resize() like so:
-
-```lua
-function love.resize(w, h)
-  push:resize(w, h)
-end
-```

@@ -7,8 +7,9 @@ examples = {}
 example = 1
 
 require "examples/1"
-
 require "examples/2"
+require "examples/3"
+require "examples/4"
 
 function love.resize(w, h)
   push:resize(w, h)

@@ -18,7 +18,7 @@ local push = {
 }
 setmetatable(push, push)
 
---TODO: multiple canvas w/ shaders + rendering resolution?
+--TODO: rendering resolution?
 --TODO: clean up code
 
 function push:applySettings(settings)
@@ -48,8 +48,8 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, settings)
   self:initValues()
 
   if self._canvas then
-    self.canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
-  end --self.canvas = actual canvas, self._canvas = use canvas?
+    self:setupCanvas({ "default" }) --setup canvas
+  end
 
   self._borderColor = {0, 0, 0}
 
@@ -57,6 +57,44 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, settings)
     ["start"] = self.start,
     ["end"] = self.finish
   }
+
+  return self
+end
+
+function push:setupCanvas(canvases)
+  table.insert(canvases, { name = "_render" }) --final render
+
+  self._canvas = true
+  self.canvases = {}
+
+  for i = 1, #canvases do
+    self.canvases[i] = {
+      name = canvases[i].name,
+      shader = canvases[i].shader,
+      canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
+    }
+  end
+
+  return self
+end
+
+function push:setCanvas(name)
+  if not self._canvas then return true end
+  return love.graphics.setCanvas( self:getCanvasTable(name).canvas )
+end
+function push:getCanvasTable(name)
+  for i = 1, #self.canvases do
+    if self.canvases[i].name == name then
+      return self.canvases[i]
+    end
+  end
+end
+function push:setShader(name, shader)
+  if not shader then
+    self:getCanvasTable("_render").shader = name
+  else
+    self:getCanvasTable(name).shader = shader
+  end
 end
 
 function push:initValues()
@@ -81,10 +119,6 @@ function push:initValues()
   self._GHEIGHT = self._RHEIGHT * self._PSCALE - self._OFFSET.y * 2
 end
 
-function push:setShader(shader)
-  self._shader = shader
-end
-
 --[[ DEPRECATED ]]--
 function push:apply(operation, shader)
   if operation == "start" then
@@ -97,7 +131,7 @@ end
 function push:start()
   if self._canvas then
     love.graphics.push()
-    love.graphics.setCanvas(self.canvas)
+    love.graphics.setCanvas(self.canvases[1].canvas)
   else
     love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
     love.graphics.setScissor(self._OFFSET.x, self._OFFSET.y, self._WWIDTH*self._SCALE.x, self._WHEIGHT*self._SCALE.y)
@@ -109,15 +143,32 @@ end
 function push:finish(shader)
   love.graphics.setBackgroundColor(unpack(self._borderColor))
   if self._canvas then
+    local _render = self:getCanvasTable("_render")
+
     love.graphics.pop()
+
+    love.graphics.setColor(255, 255, 255)
+
+    --draw canvas
+    love.graphics.setCanvas(_render.canvas)
+    for i = 1, #self.canvases - 1 do --do not draw _render yet
+      local _table = self.canvases[i]
+      love.graphics.setShader(_table.shader)
+      love.graphics.draw(_table.canvas)
+    end
     love.graphics.setCanvas()
 
+    --draw render
     love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.setShader(shader or self._shader)
-    love.graphics.draw(self.canvas, 0, 0, 0, self._SCALE.x, self._SCALE.y)
-    love.graphics.setCanvas(self.canvas)
-    love.graphics.clear()
+    love.graphics.setShader(shader or self:getCanvasTable("_render").shader)
+    love.graphics.draw(self:getCanvasTable("_render").canvas, 0, 0, 0, self._SCALE.x, self._SCALE.y)
+
+    --clear canvas
+    for i = 1, #self.canvases do
+      love.graphics.setCanvas( self.canvases[i].canvas )
+      love.graphics.clear()
+    end
+
     love.graphics.setCanvas()
     love.graphics.setShader()
   else
