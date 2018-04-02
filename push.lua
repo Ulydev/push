@@ -119,7 +119,6 @@ function push:initValues()
   self._GHEIGHT = self._RHEIGHT * self._PSCALE - self._OFFSET.y * 2
 end
 
---[[ DEPRECATED ]]--
 function push:apply(operation, shader)
   if operation == "start" then
     self:start()

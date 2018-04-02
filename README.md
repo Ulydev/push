@@ -67,7 +67,7 @@ push:start()
 --draw here
 push:finish()
 
---[[ DEPRECATED ]]--
+--alias
 push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
