@@ -90,6 +90,21 @@ function love.resize(w, h)
 end
 ```
 
+Multiple shaders
+----------------
+
+Any method that takes a shader as an argument can also take a *table* of shaders instead. The shaders will be applied in the order they're provided.
+
+Set multiple global shaders
+```lua
+push:setShader({ shader1, shader2 })
+```
+
+Set multiple canvas-specific shaders
+```lua
+push:setupCanvas({ { name = "multiple_shaders", shader = { shader1, shader2 } } })
+```
+
 Advanced canvases/shaders
 ----------------
 
