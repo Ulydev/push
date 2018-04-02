@@ -1,15 +1,19 @@
-io.stdout:setvbuf'no' 
+io.stdout:setvbuf('no')
 
 push = require "push" --require the library
-love.window.setTitle("Press Space to switch examples")
+love.window.setTitle("Press space to switch examples")
 
-examples = {}
-example = 1
+local examples = {
+  "low-res",
+  "single-shader",
+  "mouse-input",
+  "canvases-shaders"
+}
+local example = 1
 
-require "examples/1"
-require "examples/2"
-require "examples/3"
-require "examples/4"
+for i = 1, #examples do
+  examples[i] = require("examples." .. examples[i])
+end
 
 function love.resize(w, h)
   push:resize(w, h)
