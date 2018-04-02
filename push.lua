@@ -5,6 +5,8 @@
 -- The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+local love11 = love.getVersion() == 11
+
 local push = {
   
   defaults = {
@@ -98,7 +100,8 @@ function push:setShader(name, shader)
 end
 
 function push:initValues()
-  self._PSCALE = self._highdpi and love.window.getPixelScale() or 1
+  local getDPI = love11 and love.window.getDPIScale or love.window.getPixelScale
+  self._PSCALE = self._highdpi and getDPI() or 1
   
   self._SCALE = {
     x = self._RWIDTH/self._WWIDTH * self._PSCALE,
@@ -147,7 +150,8 @@ function push:finish(shader)
 
     love.graphics.pop()
 
-    love.graphics.setColor(255, 255, 255)
+    local white = love11 and 1 or 255
+    love.graphics.setColor(white, white, white)
 
     --draw canvas
     love.graphics.setCanvas(_render.canvas)
