@@ -6,6 +6,7 @@ love.window.setTitle("Press space to switch examples")
 local examples = {
   "low-res",
   "single-shader",
+  "multiple-shaders",
   "mouse-input",
   "canvases-shaders"
 }
