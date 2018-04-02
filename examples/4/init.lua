@@ -1,4 +1,6 @@
-examples[4] = function () --default example
+--[[ Multiple canvases and shaders ]]--
+
+examples[4] = function ()
   
   love.graphics.setDefaultFilter("linear", "linear") --default filter
   

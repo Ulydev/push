@@ -1,4 +1,6 @@
-examples[1] = function() --low-rez example
+--[[ Low resolution ]]--
+
+examples[1] = function()
   
   love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
   

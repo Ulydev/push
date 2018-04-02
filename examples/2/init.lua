@@ -1,4 +1,6 @@
-examples[2] = function () --default example
+--[[ Shader usage ]]--
+
+examples[2] = function ()
   
   love.graphics.setDefaultFilter("linear", "linear") --default filter
   

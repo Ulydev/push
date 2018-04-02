@@ -1,4 +1,6 @@
-examples[3] = function () --default example
+--[[ Mouse input ]]--
+
+examples[3] = function ()
   
   love.graphics.setDefaultFilter("linear", "linear") --default filter
   
@@ -32,8 +34,8 @@ examples[3] = function () --default example
     love.graphics.setColor(255, 255, 255)
     if mouseX and mouseY then love.graphics.circle("line", mouseX, mouseY, 10) end
     
-    love.graphics.printf("mouse x : " .. (mouseX or "outside"), 0, gameHeight*.5 - 25, gameWidth, "center")
-    love.graphics.printf("mouse y : " .. (mouseY or "outside"), 0, gameHeight*.5 + 25, gameWidth, "center")
+    love.graphics.printf("mouse x : " .. (mouseX or "outside"), 25, 25, gameWidth, "left")
+    love.graphics.printf("mouse y : " .. (mouseY or "outside"), 25, 50, gameWidth, "left")
     
     push:apply("end")
   end
