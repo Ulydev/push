@@ -72,6 +72,24 @@ push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
 
+Mobile support
+----------------
+
+**push** does *not* have built-in support for mobile platforms, but it is trivial to handle mobile screens correctly.
+
+A possible solution is to initialize **push** in fullscreen mode:
+```lua
+local screenWidth, screenHeight = love.window.getDesktopDimensions()
+push:setupScreen(gameWidth, gameHeight, screenWidth, screenHeight, { fullscreen = true, resizable = false, ... })
+```
+
+And listen to screen orientation changes:
+```lua
+function love.resize(w, h)
+  return push:resize(w, h)
+end
+```
+
 Advanced canvases/shaders
 ----------------
 
