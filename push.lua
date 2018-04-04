@@ -258,8 +258,7 @@ function push:switchFullscreen(winw, winh)
 end
 
 function push:resize(w, h)
-  local pixelScale = love.window.getPixelScale()
-  if self._highdpi then w, h = w / pixelScale, h / pixelScale end
+  if self._highdpi then w, h = w / self._PSCALE, h / self._PSCALE end
   self._RWIDTH = w
   self._RHEIGHT = h
   self:initValues()
