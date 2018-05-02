@@ -171,3 +171,8 @@ push:getWidth() --returns game width
 push:getHeight() --returns game height
 ```
 
+Set border color
+```lua
+push:setBorderColor(r, g, b, a) --also accepts a table
+```
+
