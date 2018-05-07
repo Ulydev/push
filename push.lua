@@ -6,6 +6,7 @@
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 local love11 = love.getVersion() == 11
+local getDPI = love11 and love.window.getDPIScale or love.window.getPixelScale
 
 local push = {
   
@@ -101,8 +102,7 @@ function push:setShader(name, shader)
 end
 
 function push:initValues()
-  local getDPI = love11 and love.window.getDPIScale or love.window.getPixelScale
-  self._PSCALE = self._highdpi and getDPI() or 1
+  self._PSCALE = (not love11 and self._highdpi) and getDPI() or 1
   
   self._SCALE = {
     x = self._RWIDTH/self._WWIDTH * self._PSCALE,
