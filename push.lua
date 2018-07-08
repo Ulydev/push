@@ -253,7 +253,7 @@ function push:switchFullscreen(winw, winh)
   
   love.window.setFullscreen(self._fullscreen, "desktop")
   if not self._fullscreen and (winw or winh) then
-    love.window.setMode(self._RWIDTH, self._RHEIGHT) --set window dimensions
+    love.window.updateMode(self._RWIDTH, self._RHEIGHT) --set window dimensions
   end
 end
 
