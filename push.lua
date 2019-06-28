@@ -84,7 +84,8 @@ function push:addCanvas(params)
     name = params.name,
     private = params.private,
     shader = params.shader,
-    canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
+    canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT),
+    stencil = params.stencil or self._stencil
   })
 end
 
