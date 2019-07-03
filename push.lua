@@ -20,7 +20,8 @@ local push = {
     resizable = false,
     pixelperfect = false,
     highdpi = true,
-    canvas = true
+    canvas = true,
+    stencil = true
   }
   
 }
@@ -83,7 +84,8 @@ function push:addCanvas(params)
     name = params.name,
     private = params.private,
     shader = params.shader,
-    canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT)
+    canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT),
+    stencil = params.stencil or self._stencil
   })
 end
 
@@ -135,7 +137,8 @@ end
 function push:start()
   if self._canvas then
     love.graphics.push()
-    love.graphics.setCanvas(self.canvases[1].canvas)
+    love.graphics.setCanvas({ self.canvases[1].canvas, stencil = self.canvases[1].stencil })
+
   else
     love.graphics.translate(self._OFFSET.x, self._OFFSET.y)
     love.graphics.setScissor(self._OFFSET.x, self._OFFSET.y, self._WWIDTH*self._SCALE.x, self._WHEIGHT*self._SCALE.y)
