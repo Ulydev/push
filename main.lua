@@ -8,7 +8,8 @@ local examples = {
   "single-shader",
   "multiple-shaders",
   "mouse-input",
-  "canvases-shaders"
+  "canvases-shaders",
+  "stencil"
 }
 local example = 1
 
