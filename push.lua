@@ -91,7 +91,8 @@ end
 
 function push:setCanvas(name)
   if not self._canvas then return true end
-  return love.graphics.setCanvas(self:getCanvasTable(name).canvas)
+  local canvasTable = self:getCanvasTable(name)
+  return love.graphics.setCanvas({ canvasTable.canvas, stencil = canvasTable.stencil })
 end
 function push:getCanvasTable(name)
   for i = 1, #self.canvases do
