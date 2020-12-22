@@ -241,8 +241,8 @@ function push:toGame(x, y)
 end
 
 function push:toReal(x, y)
-  realX = self._OFFSET.x + (self._GWIDTH * x)/self._WWIDTH
-  realY = self._OFFSET.y + (self._GHEIGHT * y)/self._WHEIGHT
+  local realX = self._OFFSET.x + (self._GWIDTH * x)/self._WWIDTH
+  local realY = self._OFFSET.y + (self._GHEIGHT * y)/self._WHEIGHT
   return realX, realY
 end
 
