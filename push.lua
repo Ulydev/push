@@ -41,6 +41,15 @@ function push:setupScreen(WWIDTH, WHEIGHT, RWIDTH, RHEIGHT, settings)
 
   self._WWIDTH, self._WHEIGHT = WWIDTH, WHEIGHT
   self._RWIDTH, self._RHEIGHT = RWIDTH, RHEIGHT
+  
+  local windowWidth, windowHeight = love.window.getDesktopDimensions()
+
+  if self._RWIDTH == 0 then
+    self._RWIDTH = windowWidth
+  end
+  if self._RHEIGHT == 0 then
+    self._RHEIGHT = windowHeight
+  end
 
   self:applySettings(self.defaults) --set defaults first
   self:applySettings(settings) --then fill with custom settings
