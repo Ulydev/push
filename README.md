@@ -1,3 +1,5 @@
+**⚠️ Looking for maintainer:** as I am not working with LÖVE anymore, this repository is not actively maintained, except for critical fixes. Please do reach out if you're interested in maintaining this repository.
+
 push
 ==============
 
