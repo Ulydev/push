@@ -50,9 +50,9 @@ local function initValues()
 			if scaleVal >= 1 and settings.upscale == "pixel-perfect" then scaleVal = math.floor(scaleVal) end
 
 			offset.x = math.floor((scale.x - scaleVal) * (pushWidth / 2))
-    	    offset.y = math.floor((scale.y - scaleVal) * (pushHeight / 2))
+			offset.y = math.floor((scale.y - scaleVal) * (pushHeight / 2))
 
-    	    scale.x, scale.y = scaleVal, scaleVal -- Apply same scale to width and height
+			scale.x, scale.y = scaleVal, scaleVal -- Apply same scale to width and height
 		elseif settings.upscale == "stretched" then -- If stretched, no need to apply offset
 			offset.x, offset.y = 0, 0
 		else
@@ -62,7 +62,7 @@ local function initValues()
 		scale.x, scale.y = 1, 1
 
 		offset.x = math.floor((windowWidth / pushWidth - 1) * (pushWidth / 2))
-    	offset.y = math.floor((windowHeight / pushHeight - 1) * (pushHeight / 2))
+		offset.y = math.floor((windowHeight / pushHeight - 1) * (pushHeight / 2))
 	end
 
 	drawWidth = windowWidth - offset.x * 2
@@ -77,23 +77,23 @@ local function setupCanvas(canvasTable)
 	for i = 1, #canvasTable do
 		local params = canvasTable[i]
 
-        table.insert(
-            canvases,
-            {
-		        name = params.name,
-		        private = params.private,
-		        shader = params.shader,
-		        canvas = love.graphics.newCanvas(pushWidth, pushHeight),
-		        stencil = params.stencil
-	        }
-        )
+		table.insert(
+			canvases,
+			{
+				name = params.name,
+				private = params.private,
+				shader = params.shader,
+				canvas = love.graphics.newCanvas(pushWidth, pushHeight),
+				stencil = params.stencil
+			}
+		)
 	end
 
 	canvasOptions = {canvases[1].canvas, stencil = canvases[1].stencil}
 end
 
 local function getCanvasTable(name)
-    for i = 1, #canvases do
+	for i = 1, #canvases do
 		if canvases[i].name == name then
 			return canvases[i]
 		end
@@ -101,7 +101,7 @@ local function getCanvasTable(name)
 end
 
 local function start()
-    if settings.canvas then
+	if settings.canvas then
 		love.graphics.push()
 		love.graphics.setCanvas(canvasOptions)
 	else
@@ -127,13 +127,13 @@ local function applyShaders(canvas, shaders)
 		-- Only create "_tmp" canvas if needed
 		if not tmp then
 			table.insert(
-            	canvases,
-            	{
-		     		name = "_tmp",
-		      		private = true,
-		      		canvas = love.graphics.newCanvas(pushWidth, pushHeight)
-	       		}
-       		)
+				canvases,
+				{
+			 		name = "_tmp",
+			  		private = true,
+			  		canvas = love.graphics.newCanvas(pushWidth, pushHeight)
+		   		}
+	   		)
 
 			tmp = getCanvasTable("_tmp")
 		end
@@ -205,27 +205,27 @@ end
 
 return {
 	setupScreen = function(width, height, settingsTable)
-        pushWidth, pushHeight = width, height
+		pushWidth, pushHeight = width, height
 		windowWidth, windowHeight = love.graphics.getDimensions()
 
-        settings = settingsTable
+		settings = settingsTable
 
-    	initValues()
+		initValues()
 
-    	if settings.canvas then
-    		setupCanvas({"default"})
-    	end
-    end,
+		if settings.canvas then
+			setupCanvas({"default"})
+		end
+	end,
 
-    setupCanvas = setupCanvas,
+	setupCanvas = setupCanvas,
 	setCanvas = function(name)
-        local canvasTable
+		local canvasTable
 
-        if not settings.canvas then return true end
+		if not settings.canvas then return true end
 
-        canvasTable = getCanvasTable(name)
-	    return love.graphics.setCanvas({canvasTable.canvas, stencil = canvasTable.stencil})
-    end,
+		canvasTable = getCanvasTable(name)
+		return love.graphics.setCanvas({canvasTable.canvas, stencil = canvasTable.stencil})
+	end,
 	setShader = function(name, shader)
 		if not shader then
 			getCanvasTable("_render").shader = name
@@ -260,13 +260,13 @@ return {
 	start = start,
 	finish = finish,
 
-    resize = function(width, height)
-	    windowWidth, windowHeight = width, height
+	resize = function(width, height)
+		windowWidth, windowHeight = width, height
 
-	    initValues()
-    end,
+		initValues()
+	end,
 
-    getWidth = function() return pushWidth end,
-    getHeight = function() return pushHeight end,
-    getDimensions = function() return pushWidth, pushHeight end
+	getWidth = function() return pushWidth end,
+	getHeight = function() return pushHeight end,
+	getDimensions = function() return pushWidth, pushHeight end
 }
