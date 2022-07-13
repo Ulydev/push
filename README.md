@@ -1,4 +1,4 @@
-**⚠️ Looking for maintainer:** as I am not working with LÖVE anymore, this repository is not actively maintained, except for critical fixes. Please do reach out if you're interested in maintaining this repository.
+**NOTE:** Check out the `dev` branch for some of the latest features in development.
 
 push
 ==============
@@ -20,9 +20,9 @@ push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen =
 
 function love.draw()
   push:start()
-  
+
   --draw here
-  
+
   push:finish()
 end
 ```
@@ -39,9 +39,9 @@ push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen =
 
 function love.draw()
   push:start()
-  
+
   --draw here
-  
+
   push:finish()
 end
 ```
