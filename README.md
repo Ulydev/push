@@ -74,6 +74,8 @@ push:apply(operation)
 ```
 **operation** should be equal to "start" or "end", meaning "before" or "after" your main drawing logic
 
+**Note**: calling `love.graphics.reset()` at any point between `push:start()` and `push:finish()` will result in the rest of your graphics operations executing incorrectly.
+
 Mobile support
 ----------------
 
