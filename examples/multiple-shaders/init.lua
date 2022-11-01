@@ -9,10 +9,9 @@ return function ()
   local windowWidth, windowHeight = love.window.getDesktopDimensions()
   windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
 
-  push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {
-    fullscreen = false,
-    resizable = true,
-    highdpi = true,
+  love.window.setMode(windowWidth, windowHeight, {resizable = true})
+  push.setupScreen(gameWidth, gameHeight, {
+    upscale = "normal",
     canvas = true
   })
 
@@ -23,7 +22,7 @@ return function ()
     
     shader1 = love.graphics.newShader("examples/multiple-shaders/shader1.fs")
     shader2 = love.graphics.newShader("examples/multiple-shaders/shader2.fs")
-    push:setShader({ shader1, shader2 })
+    push.setShader({ shader1, shader2 })
   end
   
   function love.update(dt)
@@ -34,12 +33,12 @@ return function ()
   end
 
   function love.draw()
-    push:apply("start")
+    push.start()
     
     love.graphics.setColor(255, 255, 255)
     love.graphics.draw(image, (gameWidth-image:getWidth())*.5, (gameHeight-image:getHeight())*.5)
     
-    push:apply("end")
+    push.finish()
   end
 
 end
