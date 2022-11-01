@@ -119,7 +119,7 @@ local function applyShaders(canvas, shaders)
 		love.graphics.setShader(shaders[1])
 		love.graphics.draw(canvas)
 	else
-		local canvas = love.graphics.getCanvas()
+		local _canvas = love.graphics.getCanvas()
 		local tmp = getCanvasTable("_tmp")
 		local outputCanvas
 		local inputCanvas
@@ -151,7 +151,7 @@ local function applyShaders(canvas, shaders)
 		end
 		love.graphics.pop()
 
-		love.graphics.setCanvas(canvas)
+		love.graphics.setCanvas(_canvas)
 		love.graphics.draw(outputCanvas)
 	end
 

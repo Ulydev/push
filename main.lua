@@ -5,8 +5,8 @@ local examples = {
 	"low-res",
 	--[[
 	"single-shader",
-	"multiple-shaders",
 	--]]
+	"multiple-shaders",
 	"mouse-input"
 	--[[
 	"canvases-shaders",
