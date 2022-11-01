@@ -10,7 +10,7 @@ return function ()
   windowWidth, windowHeight = windowWidth*.5, windowHeight*.5
 
   love.window.setMode(windowWidth, windowHeight, {resizable = true})
-	push.setupScreen(gameWidth, gameHeight, {
+  push.setupScreen(gameWidth, gameHeight, {
     upscale = "normal",
     canvas = true
   })
