@@ -248,21 +248,24 @@ end
 
 function push:switchFullscreen(winw, winh)
   self._fullscreen = not self._fullscreen
-  local windowWidth, windowHeight = love.window.getDesktopDimensions()
+  local _, _, flags = love.window.getMode()
+  local desktopWidth, desktopHeight = love.window.getDesktopDimensions(flags.display)
   
   if self._fullscreen then --save windowed dimensions for later
     self._WINWIDTH, self._WINHEIGHT = self._RWIDTH, self._RHEIGHT
   elseif not self._WINWIDTH or not self._WINHEIGHT then
-    self._WINWIDTH, self._WINHEIGHT = windowWidth * .5, windowHeight * .5
+    self._WINWIDTH, self._WINHEIGHT = desktopWidth * .5, desktopHeight * .5
   end
   
-  self._RWIDTH = self._fullscreen and windowWidth or winw or self._WINWIDTH
-  self._RHEIGHT = self._fullscreen and windowHeight or winh or self._WINHEIGHT
+  self._RWIDTH = self._fullscreen and desktopWidth or winw or self._WINWIDTH
+  self._RHEIGHT = self._fullscreen and desktopHeight or winh or self._WINHEIGHT
   
   self:initValues()
   
   love.window.setFullscreen(self._fullscreen, "desktop")
-  if not self._fullscreen and (winw or winh) then
+
+  local windowWidth, windowHeight = love.window.getMode()
+  if not self._fullscreen and (windowWidth~=self._RWIDTH or windowHeight~=self._RHEIGHT) then
     windowUpdateMode(self._RWIDTH, self._RHEIGHT) --set window dimensions
   end
 end
