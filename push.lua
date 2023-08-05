@@ -188,6 +188,7 @@ local function finish(shader)
 			applyShaders(render.canvas, type(shader) == "table" and shader or {shader})
 		end
 		love.graphics.pop()
+		love.graphics.translate(-offset.x, -offset.y)
 
 		-- Clear canvas
 		for i = 1, #canvases do
@@ -200,6 +201,7 @@ local function finish(shader)
 	else
 		love.graphics.pop()
 		love.graphics.setScissor()
+		love.graphics.translate(-offset.x, -offset.y)
 	end
 end
 
