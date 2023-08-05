@@ -200,6 +200,7 @@ local function finish(shader)
 	else
 		love.graphics.pop()
 		love.graphics.setScissor()
+		love.graphics.translate(-offset.x, -offset.y)
 	end
 end
 
