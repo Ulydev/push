@@ -85,7 +85,8 @@ function push:addCanvas(params)
     private = params.private,
     shader = params.shader,
     canvas = love.graphics.newCanvas(self._WWIDTH, self._WHEIGHT),
-    stencil = params.stencil or self._stencil
+    stencil = params.stencil or self._stencil,
+    retain = params.retain
   })
 end
 
@@ -214,8 +215,10 @@ function push:finish(shader)
 
     --clear canvas
     for i = 1, #self.canvases do
-      love.graphics.setCanvas(self.canvases[i].canvas)
-      love.graphics.clear()
+        if not self.canvases[i].retain then
+            love.graphics.setCanvas(self.canvases[i].canvas)
+            love.graphics.clear()
+        end
     end
 
     love.graphics.setCanvas()

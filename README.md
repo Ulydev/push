@@ -119,6 +119,12 @@ push:setupCanvas(canvasList)
 --e.g. push:setupCanvas({   { name = "foreground", shader = foregroundShader }, { name = "background" }   })
 ```
 
+Table parameters are:
+- **name** (string): name of canvas
+- **shader** (shader): shader to be used when drawing canvas
+- **stencil** (bool): canvas uses stencil
+- **retain** (bool): do not clear canvas in push:finish()
+
 Shaders can be passed to canvases directly through push:setupCanvas(), or you can choose to set them later.
 ```lua
 push:setShader(canvasName, shader)
